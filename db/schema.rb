@@ -11,26 +11,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140130121538) do
+ActiveRecord::Schema.define(version: 20140220223624) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "builds", force: true do |t|
     t.integer  "project_id"
     t.string   "ref"
     t.string   "status"
     t.datetime "finished_at"
-    t.text     "trace",       limit: 2147483647
+    t.text     "trace"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "sha"
     t.datetime "started_at"
     t.string   "tmp_file"
     t.string   "before_sha"
-    t.text     "push_data",   limit: 16777215
+    t.text     "push_data"
     t.integer  "runner_id"
   end
 
   add_index "builds", ["project_id"], name: "index_builds_on_project_id", using: :btree
   add_index "builds", ["runner_id"], name: "index_builds_on_runner_id", using: :btree
+
+  create_table "capabilities", force: true do |t|
+    t.string   "name"
+    t.integer  "version"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "capabilities_runners", id: false, force: true do |t|
+    t.integer "runner_id",     null: false
+    t.integer "capability_id", null: false
+  end
 
   create_table "projects", force: true do |t|
     t.string   "name",                                     null: false
@@ -50,6 +65,7 @@ ActiveRecord::Schema.define(version: 20140130121538) do
     t.string   "email_recipients",         default: "",    null: false
     t.boolean  "email_add_committer",      default: true,  null: false
     t.boolean  "email_only_broken_builds", default: true,  null: false
+    t.boolean  "use_docker"
   end
 
   create_table "runner_projects", force: true do |t|

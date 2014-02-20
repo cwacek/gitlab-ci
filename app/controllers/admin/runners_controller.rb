@@ -20,6 +20,7 @@ class Admin::RunnersController < Admin::ApplicationController
   end
 
   def destroy
+    binding.pry
     @runner.destroy
 
     redirect_to admin_runners_path

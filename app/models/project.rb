@@ -12,6 +12,7 @@
 #  default_ref             :string(255)
 #  gitlab_url              :string(255)
 #  always_build            :boolean          default(FALSE), not null
+#  use_docker              :boolean          default(FALSE), not null
 #  polling_interval        :integer
 #  public                  :boolean          default(FALSE), not null
 #  ssh_url_to_repo         :string(255)
@@ -24,7 +25,7 @@
 
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
-    :default_ref, :gitlab_url, :always_build, :polling_interval,
+    :default_ref, :gitlab_url, :always_build, :use_docker, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch,
     :email_recipients, :email_add_committer, :email_only_broken_builds
 

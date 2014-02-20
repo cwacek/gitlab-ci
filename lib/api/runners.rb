@@ -1,3 +1,5 @@
+require 'pry'
+require 'pry-debugger'
 module API
   # Runners API
   class Runners < Grape::API
@@ -35,6 +37,12 @@ module API
         runner = Runner.create(public_key: params[:public_key])
 
         if runner.id
+
+          params[:capabilities].each do |cap, version|
+            capability = Capability.where(name: cap, version: version).first_or_create
+            runner.capabilities << capability
+          end
+
           present runner, with: Entities::Runner
         else
           not_found!

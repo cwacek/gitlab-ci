@@ -5,7 +5,7 @@ module API
     end
 
     class Runner < Grape::Entity
-      expose :id, :token
+      expose :id, :token, :capabilities
     end
 
     class Project < Grape::Entity

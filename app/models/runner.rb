@@ -14,6 +14,7 @@ class Runner < ActiveRecord::Base
   has_many :builds
   has_many :runner_projects, dependent: :destroy
   has_many :projects, through: :runner_projects
+  has_and_belongs_to_many :capabilities
 
   has_one :last_build, ->() { order('id DESC') }, class_name: 'Build'
 

@@ -22,6 +22,16 @@
 
     .form-group
       = label_tag nil, class: 'control-label' do
+        Build Options
+      .col-sm-10
+        .checkbox
+          = f.label :use_docker do
+            = f.check_box :use_docker
+            %strong Use Docker
+            .light Looks for a Dockerfile in the top directory. Builds it and runs all tests inside it
+
+    .form-group
+      = label_tag nil, class: 'control-label' do
         Get code
       .col-sm-10
         %p Get recent application code by next command:
