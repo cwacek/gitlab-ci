@@ -54,6 +54,11 @@ class Build < ActiveRecord::Base
     new_build.save
   end
 
+  def self.runnable_by(runner)
+    runnable = runner.runnable_projects
+    pending.where(project_id: runnable)
+  end
+
   state_machine :status, initial: :pending do
     event :run do
       transition pending: :running
@@ -150,6 +155,12 @@ class Build < ActiveRecord::Base
 
   def commands
     project.scripts
+  end
+
+  def opts
+    Hash.new project.requirements.map do |req|
+      ["use_#{req.name}", true]
+    end
   end
 
   def commit_data
