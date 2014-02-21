@@ -14,6 +14,7 @@ module API
         required_attributes! [:token]
 
         ActiveRecord::Base.transaction do
+          # TODO BINDING HERE
           builds = Build.runnable_by current_runner
           builds = builds.where(project_id: current_runner.projects) unless current_runner.shared?
           build =  builds.first_pending
