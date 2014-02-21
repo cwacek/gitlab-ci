@@ -25,13 +25,20 @@
 
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
-    :default_ref, :gitlab_url, :always_build, :use_docker, :polling_interval,
+    :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch,
     :email_recipients, :email_add_committer, :email_only_broken_builds
 
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
   has_many :runners, through: :runner_projects
+  has_many :requirements, through: :project_requirements, source: :capability
+  has_many :project_requirements
+
+  accepts_nested_attributes_for :requirements
+  attr_accessible :requirements
+  attr_accessible :requirements_attributes
+
 
   #
   # Validations

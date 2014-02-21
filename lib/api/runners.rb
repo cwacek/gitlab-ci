@@ -38,8 +38,8 @@ module API
 
         if runner.id
 
-          params[:capabilities].each do |cap, version|
-            capability = Capability.where(name: cap, version: version).first_or_create
+          params[:capabilities].each do |cap|
+            capability = Capability.where(cap).first_or_create
             runner.capabilities << capability
           end
 

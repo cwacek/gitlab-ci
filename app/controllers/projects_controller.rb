@@ -55,9 +55,11 @@ class ProjectsController < ApplicationController
   end
 
   def edit
+    @capabilities = Capability.all
   end
 
   def update
+    params[:project][:requirements].map! { |r| Capability.find(r.to_i)}
     if project.update_attributes(params[:project])
       redirect_to project, notice: 'Project was successfully updated.'
     else

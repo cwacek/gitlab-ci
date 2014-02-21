@@ -24,11 +24,11 @@
       = label_tag nil, class: 'control-label' do
         Build Options
       .col-sm-10
-        .checkbox
-          = f.label :use_docker do
-            = f.check_box :use_docker
-            %strong Use Docker
-            .light Looks for a Dockerfile in the top directory. Builds it and runs all tests inside it
+        - @capabilities.each do |cap|
+          .checkbox
+            = check_box_tag 'project[requirements][]', cap.id, @project.requirements.include?(cap)
+            %strong= cap.name
+            .light= cap.description
 
     .form-group
       = label_tag nil, class: 'control-label' do
