@@ -26,6 +26,17 @@ class Runner < ActiveRecord::Base
     self.token = SecureRandom.hex(15) if self.token.blank?
   end
 
+  def runnable_projects
+    runnable = Project.requirements_by_project.map do |p, req|
+      p if req.all? {|r| capabilities.include? r}
+    end
+    runnable.compact
+  end
+
+  def can_run(project)
+    return project.requirements.all? {|r| capabilities.include? r}
+  end
+
   def assign_to(project, current_user)
     project.runner_projects.create!(runner_id: self.id)
   end

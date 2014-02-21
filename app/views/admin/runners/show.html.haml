@@ -3,6 +3,12 @@
 
 %p.light= @runner.description
 %p
+  %ul.list-inline
+    %li
+      %strong Capabilities:
+    - @runner.capabilities.each do |cap|
+      %li= cap.name
+%p
   = link_to admin_runners_path do
     &larr; Back to runners list
 %hr
@@ -25,14 +31,17 @@
             .pull-right
               = link_to 'Disable', [:admin, project, runner_project], method: :delete, class: 'btn btn-danger btn-xs'
 
-      - Project.supported_runners.each do |project|
+      - (Project.all - @runner.runner_projects).each do |project|
         %li
           %h5
             = project.name
             .pull-right
               = form_for [:admin, project, project.runner_projects.new] do |f|
                 = f.hidden_field :runner_id, value: @runner.id
-                = f.submit 'Enable', class: 'btn btn-xs'
+                - if @runner.can_run project
+                  = f.submit 'Enable', class: 'btn btn-xs'
+                - else
+                  = f.submit 'Not Capable', disabled: true, class: 'btn btn-xs'
 
   .col-md-6
     %h5 Recent builds served by this runner

@@ -38,9 +38,11 @@ module API
 
         if runner.id
 
-          params[:capabilities].each do |cap|
-            capability = Capability.where(cap).first_or_create
-            runner.capabilities << capability
+          if params[:capabilities]
+            params[:capabilities].each do |cap|
+              capability = Capability.where(cap).first_or_create
+              runner.capabilities << capability
+            end
           end
 
           present runner, with: Entities::Runner

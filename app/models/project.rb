@@ -91,7 +91,15 @@ class Project < ActiveRecord::Base
     def already_added?(project)
       where(gitlab_url: project.web_url).any?
     end
+
+    def requirements_by_project
+      Project.all.map do |p|
+        [p, p.requirements]
+      end
+    end
+
   end
+
 
   def set_default_values
     self.token = SecureRandom.hex(15) if self.token.blank?
